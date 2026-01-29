@@ -19,7 +19,7 @@
     <main class="menu-section">
         <h2 class="section-title">Our Menu</h2>
 
-        <div class="menu-grid">
+       <div class="menu-grid">
             <div class="menu-card">
                 <div class="menu-image">
                     <img src="Pics/Nasi Goreng.png" alt="Fried Rice">
@@ -88,11 +88,37 @@
         </div>
     </main>
 
-    <section class="reward-section">
-        <div class="reward-box">
-            <div class="reward-icon">🎟️</div>
-            <h3 class="reward-title">QR Exclusive Reward</h3>
-            <p class="reward-text">Show this page on bazaar day to get <strong>₱10 OFF</strong> any meal</p>
+    <!-- Promo Redemption Section -->
+    <section class="promo-section">
+        <div class="promo-box">
+            <h2 class="promo-title">Redeem Your Promo</h2>
+            
+            <div id="redeemForm" class="redeem-form">
+                <input type="text" id="promoInput" class="promo-input" placeholder="Enter promo code" />
+                <button id="redeemBtn" class="redeem-btn">Redeem</button>
+                <p id="messageArea" class="message-area"></p>
+            </div>
+
+            <!-- Winner Form (hidden initially) -->
+            <div id="winnerForm" class="winner-form" style="display: none;">
+                <h3 class="winner-header">🎉 Congratulations! You Won! 🎉</h3>
+                <p class="winner-instruction">Please fill in your details to claim your reward:</p>
+                <input type="text" id="winnerName" class="form-input" placeholder="Full Name" required />
+                <input type="text" id="winnerSection" class="form-input" placeholder="Section / Class" required />
+                <button id="submitWinnerBtn" class="submit-btn">Submit</button>
+            </div>
+
+            <!-- Winner Confirmation (hidden initially) -->
+            <div id="winnerConfirmation" class="winner-confirmation" style="display: none;">
+                <div class="confirmation-icon">🏆</div>
+                <h3 class="confirmation-title">Winner Details</h3>
+                <div class="winner-details">
+                    <p><strong>Name:</strong> <span id="displayName"></span></p>
+                    <p><strong>Section:</strong> <span id="displaySection"></span></p>
+                    <p><strong>Winning ID:</strong> <span id="displayWinningId"></span></p>
+                </div>
+                <p class="confirmation-message">Save or show this screen on bazaar day to claim your reward.</p>
+            </div>
         </div>
     </section>
 
@@ -104,5 +130,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
-
