@@ -1,13 +1,11 @@
-
 const PROMO_CODE = "BLAST2026";
-
 const MAX_REDEMPTIONS = 500;
-
 const MAX_WINNERS = 5;
 
 document.addEventListener("DOMContentLoaded", () => {
     initMenuEffects();
     initPromoSystem();
+    initAdminPanel();
 });
 
 function initMenuEffects() {
@@ -21,6 +19,94 @@ function initMenuEffects() {
             }, 150);
         });
     });
+}
+
+// ========================================
+// ADMIN PANEL
+// ========================================
+
+function initAdminPanel() {
+    const logo = document.getElementById("logoTrigger");
+    const panel = document.getElementById("adminPanel");
+    const closeBtn = document.getElementById("closeAdmin");
+    const refreshBtn = document.getElementById("refreshStats");
+    const resetBtn = document.getElementById("resetAll");
+
+    let clickCount = 0;
+    let clickTimer = null;
+
+    // Triple-click logo to show admin panel
+    logo.addEventListener("click", () => {
+        clickCount++;
+        
+        if (clickCount === 1) {
+            clickTimer = setTimeout(() => {
+                clickCount = 0;
+            }, 500);
+        }
+        
+        if (clickCount === 3) {
+            clearTimeout(clickTimer);
+            clickCount = 0;
+            toggleAdminPanel();
+        }
+    });
+
+    closeBtn.addEventListener("click", () => {
+        panel.style.display = "none";
+    });
+
+    refreshBtn.addEventListener("click", updateAdminStats);
+
+    resetBtn.addEventListener("click", () => {
+        if (confirm("⚠️ Are you sure you want to reset ALL data? This cannot be undone!")) {
+            if (confirm("Really sure? This will delete all redemptions and winners!")) {
+                resetAllData();
+                updateAdminStats();
+                alert("✅ All data has been reset!");
+            }
+        }
+    });
+
+    // Update stats when panel is shown
+    updateAdminStats();
+}
+
+function toggleAdminPanel() {
+    const panel = document.getElementById("adminPanel");
+    if (panel.style.display === "none") {
+        panel.style.display = "block";
+        updateAdminStats();
+    } else {
+        panel.style.display = "none";
+    }
+}
+
+function updateAdminStats() {
+    const totalRedemptions = getTotalRedemptions();
+    const totalWinners = getTotalWinners();
+    const remainingRedemptions = MAX_REDEMPTIONS - totalRedemptions;
+    const remainingWinners = MAX_WINNERS - totalWinners;
+
+    document.getElementById("adminTotalRedemptions").textContent = 
+        `${totalRedemptions} / ${MAX_REDEMPTIONS}`;
+    document.getElementById("adminRemainingRedemptions").textContent = 
+        remainingRedemptions;
+    document.getElementById("adminTotalWinners").textContent = 
+        `${totalWinners} / ${MAX_WINNERS}`;
+    document.getElementById("adminRemainingWinners").textContent = 
+        remainingWinners;
+}
+
+function resetAllData() {
+    localStorage.removeItem("totalRedemptions");
+    localStorage.removeItem("totalWinners");
+    localStorage.removeItem("userRedeemed");
+    localStorage.removeItem("winners");
+    
+    // Re-enable form
+    document.getElementById("redeemBtn").disabled = false;
+    document.getElementById("promoInput").disabled = false;
 }
 
 // ========================================
@@ -86,6 +172,7 @@ function redeemPromo() {
     }
 
     checkPromoLimit();
+    updateAdminStats(); // Update admin panel if it's open
 }
 
 // ========================================
@@ -124,7 +211,12 @@ function handleWinnerSubmission() {
     }
 
     const winningId = generateWinningId();
+    
+    // Save winner data
+    saveWinnerData(name, section, winningId);
+    
     showWinnerConfirmation(name, section, winningId);
+    updateAdminStats(); // Update admin panel
 }
 
 function showWinnerConfirmation(name, section, id) {
@@ -138,6 +230,23 @@ function showWinnerConfirmation(name, section, id) {
 
 function generateWinningId() {
     return `WIN-${Date.now()}-${Math.floor(Math.random() * 10000)}`;
+}
+
+function saveWinnerData(name, section, winningId) {
+    const winners = getWinners();
+    winners.push({
+        name: name,
+        section: section,
+        winningId: winningId,
+        timestamp: new Date().toISOString(),
+        redemptionNumber: getTotalRedemptions()
+    });
+    localStorage.setItem("winners", JSON.stringify(winners));
+}
+
+function getWinners() {
+    const data = localStorage.getItem("winners");
+    return data ? JSON.parse(data) : [];
 }
 
 // ========================================

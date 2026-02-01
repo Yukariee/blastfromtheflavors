@@ -8,10 +8,45 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <!-- SECRET ADMIN PANEL - Triple-click the logo to show/hide -->
+    <div id="adminPanel" class="admin-panel" style="display: none;">
+        <div class="admin-header">
+            <h3>📊 Admin Dashboard</h3>
+            <button id="closeAdmin" class="close-admin">✕</button>
+        </div>
+        <div class="admin-content">
+            <div class="stat-card">
+                <div class="stat-label">Total Redemptions</div>
+                <div class="stat-value" id="adminTotalRedemptions">0 / 500</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-label">Remaining Redemptions</div>
+                <div class="stat-value" id="adminRemainingRedemptions">500</div>
+            </div>
+            <div class="stat-card winners">
+                <div class="stat-label">Total Winners</div>
+                <div class="stat-value" id="adminTotalWinners">0 / 5</div>
+            </div>
+            <div class="stat-card winners">
+                <div class="stat-label">Remaining Winners</div>
+                <div class="stat-value" id="adminRemainingWinners">5</div>
+            </div>
+            
+            <div class="admin-actions">
+                <button id="refreshStats" class="admin-btn refresh">🔄 Refresh Stats</button>
+                <button id="resetAll" class="admin-btn reset">⚠️ Reset All Data</button>
+            </div>
+            
+            <div class="admin-note">
+                <strong>Note:</strong> This panel shows data from THIS browser only. Each device/browser has its own localStorage.
+            </div>
+        </div>
+    </div>
+
     <header class="header">
         <div class="header-content">
-            <!-- Logo Image - Replace 'logo.png' with your actual logo file -->
-            <img src="Pics/logo.png" alt="Blast from the Flavors Logo" class="logo">
+            <!-- Logo Image - Triple-click to show admin panel -->
+            <img src="Pics/logo.png" alt="Blast from the Flavors Logo" class="logo" id="logoTrigger">
             
             <h1 class="business-name">Blast from the Flavors</h1>
             <p class="subtitle">Malaysian Street Food</p>
