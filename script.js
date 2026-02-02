@@ -1,6 +1,6 @@
 const PROMO_CODE = "BLAST2026";
-const MAX_REDEMPTIONS = 6;
-const MAX_WINNERS = 2;
+const MAX_REDEMPTIONS = 1000;
+const MAX_WINNERS = 5;
 
 document.addEventListener("DOMContentLoaded", () => {
     initMenuEffects();
